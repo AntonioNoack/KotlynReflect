@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="KotlynReflection:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/KotlynReflection</output-path>
-    <root id="archive" name="KotlynReflection.jar">
-      <element id="module-output" name="KotlynReflection" />
-    </root>
-  </artifact>
-</component>

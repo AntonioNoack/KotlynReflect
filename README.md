@@ -1,4 +1,6 @@
-# Kotlyn Reflection
+# Kotlyn Reflect
+
+*Minimal Kotlin reflection library*
 
 ## Project Overview
 Minimal Kotlin reflections on JVM for [Rem's Engine](https://github.com/AntonioNoack/RemsEngine):
@@ -12,4 +14,4 @@ Kotlin's own reflection library is very bloated, using 3MB of compressed zip-spa
 I want(ed) to still use Kotlin's reflection, so I maybe can use Kotlin/JS or Kotlin/WASM as a target for my game engine.
 But space is costly on the web, so I want(ed) to optimize it.
 
-The total size of this library is 14kB (~200x smaller).
+The total size of this library is 15kB (~200x smaller).
