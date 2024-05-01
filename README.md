@@ -1,10 +1,10 @@
 # Kotlyn Reflection
 
 ## Project Overview
-Minimal Kotlin reflections on JVM for Rem's Engine:
+Minimal Kotlin reflections on JVM for [Rem's Engine](https://github.com/AntonioNoack/RemsEngine):
 Since Kotlin forbids the usage of the kotlin namespace in foreign projects,
 I decided to rename "kotlin" to "kotlyn", and have a script when exporting that
-replaces any references in Rem's Engine in a few packages like
+replaces any references in [Rem's Engine](https://github.com/AntonioNoack/RemsEngine) in a few packages like
 "kotlin.reflect" with "kotlyn.reflect".
 
 ## Motivation
