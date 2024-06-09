@@ -48,6 +48,11 @@ public class KClasses {
         }
 
         @Override
+        public String getName() {
+            return field.getName();
+        }
+
+        @Override
         public void setAccessible(boolean value) {
             field.setAccessible(value);
         }
@@ -65,6 +70,11 @@ public class KClasses {
         ArrayList<KFunction> result = new ArrayList<>(methods.length);
         for (Method method : methods) {
             result.add(new KFunction() {
+                @Override
+                public String getName() {
+                    return method.getName();
+                }
+
                 @Override
                 public void setAccessible(boolean value) {
                     method.setAccessible(value);
