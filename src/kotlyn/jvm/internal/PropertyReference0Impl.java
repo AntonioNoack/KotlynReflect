@@ -8,74 +8,81 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings({"unused", "rawtypes"})
+@SuppressWarnings({"unused"})
 public class PropertyReference0Impl<K, V>
         implements KProperty1<K, V>, Function1<K, V> {
 
-    Object instance;
-    Class clazz;
-    String propertyName;
-    String getterName;
-    Field field;
-    Method getter;
+    final Object instance;
+    final Field field;
+    final Method getter;
 
-    public PropertyReference0Impl(Class clazz, String propertyName, String getterName, int idk) {
-        this.clazz = clazz;
-        this.propertyName = propertyName;
-        this.getterName = getterName;
+    public PropertyReference0Impl(Class<?> clazz, String propertyName, String getterName, int idk) {
+        this(null, clazz, propertyName, getterName, idk);
     }
 
-    public PropertyReference0Impl(Object instance, Class clazz, String propertyName, String getterName, int idk) {
-        this(clazz, propertyName, getterName, idk);
+    public PropertyReference0Impl(Object instance, Class<?> clazz, String propertyName, String getterName, int idk) {
+        field = findField(clazz, propertyName);
+        getter = findGetter(clazz, getterName);
+        if (field == null) warnNoField(clazz, propertyName, getterName);
+        else if (getter != null) warnNoMethod(clazz, propertyName, getterName);
         this.instance = instance;
     }
 
-    private void ensureField() {
+    private static Field findField(Class<?> clazz, String propertyName) {
         try {
-            if (field == null) field = clazz.getField(propertyName);
-        } catch (NoSuchFieldException e) {
-            System.err.println("NoSuchField: " + clazz + ", " + propertyName + ", " + getterName);
-            throw new RuntimeException(e);
+            return clazz.getField(propertyName);
+        } catch (NoSuchFieldException ignored) {
+            return null;
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void ensureGetter() {
+    private static Method findGetter(Class<?> clazz, String getterName) {
         try {
-            if (getter == null) getter = clazz.getMethod(getterName.substring(0, getterName.indexOf('(')));
-        } catch (NoSuchMethodException e) {
-            System.err.println("NoSuchMethod: " + clazz + ", " + propertyName + ", " + getterName);
-            throw new RuntimeException(e);
+            return clazz.getMethod(getterName.substring(0, getterName.indexOf('(')));
+        } catch (NoSuchMethodException ignored) {
+            return null;
         }
+    }
+
+    private static void warnNoField(Class<?> clazz, String propertyName, String getterName) {
+        warn("NoSuchField: ", clazz, propertyName, getterName);
+    }
+
+    private static void warnNoMethod(Class<?> clazz, String propertyName, String getterName) {
+        warn("NoSuchMethod: ", clazz, propertyName, getterName);
+    }
+
+    private static void warn(String message, Class<?> clazz, String propertyName, String getterName) {
+        System.err.println(message + clazz + ", " + propertyName + ", " + getterName);
     }
 
     @Override
     public String getName() {
-        return propertyName;
+        return field != null ? field.getName() : null;
     }
 
     @Override
     public void setAccessible(boolean value) {
-        ensureField();
-        field.setAccessible(value);
+        if (field != null) field.setAccessible(value);
+        if (getter != null) getter.setAccessible(value);
     }
 
     @Override
     public List<Annotation> getAnnotations() {
-        ensureField();
-        return Arrays.asList(field.getAnnotations());
+        return field != null ? Arrays.asList(field.getAnnotations()) : Collections.emptyList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public V invoke(K k) {
-        ensureGetter();
         try {
-            return (V) getter.invoke(k);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            if (getter != null) return (V) getter.invoke(k);
+            if (field != null) return (V) field.get(k);
+        } catch (IllegalAccessException | InvocationTargetException ignored) {
         }
+        return null;
     }
 }

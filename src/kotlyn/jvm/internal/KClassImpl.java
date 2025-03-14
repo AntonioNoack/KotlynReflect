@@ -15,6 +15,11 @@ public class KClassImpl<V> implements KClass<V> {
     }
 
     @Override
+    public String getQualifiedName() {
+        return java.getName();
+    }
+
+    @Override
     public boolean isInstance(Object instance) {
         return java.isInstance(instance);
     }

@@ -1,8 +1,12 @@
 package kotlyn.jvm.internal;
 
+import kotlin.jvm.internal.PropertyReference0;
+import kotlin.jvm.internal.PropertyReference1;
+import kotlin.reflect.KProperty0;
 import kotlyn.reflect.KClass;
 import kotlyn.reflect.KMutableProperty0;
 import kotlyn.reflect.KMutableProperty1;
+import kotlyn.reflect.KProperty1;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,6 +19,16 @@ public class Reflection {
     @SuppressWarnings({"rawtypes", "unused"}) // used by some classes
     public static KMutableProperty1 mutableProperty1(MutablePropertyReference1 ref) {
         return (KMutableProperty1) ref;
+    }
+
+    @SuppressWarnings({"rawtypes", "unused"}) // not used yet, because it's trivial?
+    public static KProperty0 property0(PropertyReference0 ref) {
+        return (KProperty0) ref;
+    }
+
+    @SuppressWarnings({"rawtypes", "unused"}) // used by ScrollPanelXY-Companion
+    public static KProperty1 property1(PropertyReference1 ref) {
+        return (KProperty1) ref;
     }
 
     @SuppressWarnings("rawtypes")
