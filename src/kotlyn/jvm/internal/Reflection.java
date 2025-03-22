@@ -2,11 +2,7 @@ package kotlyn.jvm.internal;
 
 import kotlin.jvm.internal.PropertyReference0;
 import kotlin.jvm.internal.PropertyReference1;
-import kotlin.reflect.KProperty0;
-import kotlyn.reflect.KClass;
-import kotlyn.reflect.KMutableProperty0;
-import kotlyn.reflect.KMutableProperty1;
-import kotlyn.reflect.KProperty1;
+import kotlyn.reflect.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 
