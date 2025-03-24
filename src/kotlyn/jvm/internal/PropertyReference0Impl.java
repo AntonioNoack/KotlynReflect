@@ -15,7 +15,7 @@ import java.util.List;
 public class PropertyReference0Impl<K, V>
         implements KProperty1<K, V>, Function1<K, V> {
 
-    final Object instance;
+    final Object receiver;
     final Field field;
     final Method getter;
 
@@ -23,12 +23,14 @@ public class PropertyReference0Impl<K, V>
         this(null, clazz, propertyName, getterName, idk);
     }
 
-    public PropertyReference0Impl(Object instance, Class<?> clazz, String propertyName, String getterName, int idk) {
-        field = findField(clazz, propertyName);
+    public PropertyReference0Impl(Object receiver, Class<?> clazz, String propertyName, String getterName, int idk) {
         getter = findGetter(clazz, getterName);
-        if (field == null) warnNoField(clazz, propertyName, getterName);
-        else if (getter != null) warnNoMethod(clazz, propertyName, getterName);
-        this.instance = instance;
+        if (getter == null) {
+            warnNoMethod(clazz, propertyName, getterName);
+            field = findField(clazz, propertyName);
+            if (field == null) warnNoField(clazz, propertyName, getterName);
+        } else field = null;
+        this.receiver = receiver;
     }
 
     private static Field findField(Class<?> clazz, String propertyName) {
