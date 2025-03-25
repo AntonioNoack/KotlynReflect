@@ -4,7 +4,7 @@ import kotlin.jvm.internal.PropertyReference0;
 import kotlin.jvm.internal.PropertyReference1;
 import kotlyn.reflect.*;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 public class Reflection {
     @SuppressWarnings({"rawtypes", "unused"}) // used by some classes
@@ -28,10 +28,15 @@ public class Reflection {
     }
 
     @SuppressWarnings("rawtypes")
-    private static final ConcurrentHashMap<Class, Object> classes = new ConcurrentHashMap<>(256);
+    private static final HashMap<Class, KClass<?>> classes = new HashMap<>(256);
 
-    @SuppressWarnings("unchecked")
-    public static <V> KClass<V> getOrCreateKotlinClass(Class<V> clazz) {
-        return (KClassImpl<V>) classes.computeIfAbsent(clazz, KClassImpl::new);
+    public static <V> KClass<?> getOrCreateKotlinClass(Class<V> javaClass) {
+        synchronized (classes) {
+            KClass<?> kotlinClass = classes.get(javaClass);
+            if (kotlinClass != null) return kotlinClass;
+            kotlinClass = new KClassImpl<>(javaClass);
+            classes.put(javaClass, kotlinClass);
+            return kotlinClass;
+        }
     }
 }
