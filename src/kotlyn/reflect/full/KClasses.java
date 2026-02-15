@@ -2,13 +2,18 @@ package kotlyn.reflect.full;
 
 import kotlyn.jvm.internal.KClassImpl;
 import kotlyn.jvm.internal.Reflection;
-import kotlyn.reflect.*;
+import kotlyn.reflect.KClass;
+import kotlyn.reflect.KFunction;
+import kotlyn.reflect.KProperty1;
 import kotlyn.reflect.impl.KFunctionImpl;
 import kotlyn.reflect.impl.KPropertyImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class KClasses {
@@ -47,5 +52,10 @@ public class KClasses {
             result.add(new KFunctionImpl(method));
         }
         return result;
+    }
+
+    public static Object createInstance(KClass clazz)
+            throws InstantiationException, IllegalAccessException {
+        return ((KClassImpl) clazz).java.newInstance();
     }
 }
